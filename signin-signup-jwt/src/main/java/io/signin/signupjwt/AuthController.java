@@ -22,7 +22,7 @@ import io.signin.signup.repository.RoleRepository;
 import io.signin.signup.repository.UserRepository;
 
 @RestController
-@RequestMapping("/api/auth")
+//@RequestMapping("/api/auth")
 public class AuthController {
 	@Autowired
     private AuthenticationManager authenticationManager;
