@@ -1,4 +1,5 @@
 package io.signin.signupjwt;
+import io.signin.signupjwt.AuthenticationResponse;
 
 import java.util.Collections;
 
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,14 +35,32 @@ public class AuthController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+	private JwtUtil jwtTokenUtil;
+    
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
+    
+    @RequestMapping({ "/hello" })
+	public String firstPage() {
+		return "Hello World";
+	}
+    
 
     @PostMapping("/signin")
-    public ResponseEntity<String> authenticateUser(@RequestBody LoginDto loginDto){
+    public ResponseEntity<io.signin.signupjwt.AuthenticationResponse> authenticateUser(@RequestBody LoginDto loginDto){
         org.springframework.security.core.Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.getUsernameorEmail(), loginDto.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("User signed-in successfully!.", HttpStatus.OK);
+       // return new ResponseEntity<>("User signed-in successfully!.", HttpStatus.OK);
+        
+        UserDetails userDetails = userDetailsService
+				.loadUserByUsername(loginDto.getUsernameorEmail());
+
+		final String jwt = jwtTokenUtil.generateToken(userDetails);
+
+		return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 
     @PostMapping("/signup")
