@@ -1,9 +1,13 @@
 package io.signin.signup.payload;
 
+import java.io.Serializable;
+
+import org.springframework.security.core.userdetails.UserDetails;
+
 import lombok.Data;
 
 @Data
-public class LoginDto {
+public class LoginDto implements Serializable {
 private String usernameorEmail;
 private String password;
 public String getUsernameorEmail() {
@@ -18,5 +22,6 @@ public String getPassword() {
 public void setPassword(String password) {
 	this.password = password;
 }
+
 
 }
