@@ -8,19 +8,19 @@ import lombok.Data;
 
 @Data
 public class LoginDto implements Serializable {
-private String usernameorEmail;
+private String email;
 private String password;
-public String getUsernameorEmail() {
-	return usernameorEmail;
+public String getEmail() {
+	return email;
 }
-public void setUsernameorEmail(String usernameorEmail) {
-	this.usernameorEmail = usernameorEmail;
+public void setEmail(String Email) {
+	this.email = Email;
 }
 public String getPassword() {
 	return password;
 }
-public void setPassword(String password) {
-	this.password = password;
+public void setPassword(String Password) {
+	this.password = Password;
 }
 
 

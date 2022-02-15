@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import io.signin.signup.repository.UserRepository;
+import io.signin.signupjwt.exception.UnauthorizedExpection;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -25,10 +26,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
-       User user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
-               .orElseThrow(() ->
-                       new UsernameNotFoundException("User not found with username or email:" + usernameOrEmail));
+    public UserDetails loadUserByUsername(String Email) throws UnauthorizedExpection{
+       User user = userRepository.findByEmail(Email);
+        if (user == null)
+        {
+                 throw new UnauthorizedExpection();
+        }
         return new org.springframework.security.core.userdetails.User(user.getEmail(),
                 user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
