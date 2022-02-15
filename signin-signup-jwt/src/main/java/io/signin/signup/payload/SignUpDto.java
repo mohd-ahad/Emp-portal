@@ -1,24 +1,29 @@
 package io.signin.signup.payload;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 import lombok.Data;
+import org.hibernate.annotations.Target;
+
+import java.lang.annotation.ElementType;
 
 @Data
 public class SignUpDto {
+@NotEmpty(message="Name Must Be Provided")
 private String name;
-private String username;
+@NotEmpty
 private String email;
+
+@NotEmpty
+@Size(min=8,max=30)
 private String password;
+
 public String getName() {
 	return name;
 }
 public void setName(String name) {
 	this.name = name;
-}
-public String getUsername() {
-	return username;
-}
-public void setUsername(String username) {
-	this.username = username;
 }
 public String getEmail() {
 	return email;
@@ -32,6 +37,7 @@ public String getPassword() {
 public void setPassword(String password) {
 	this.password = password;
 }
+
 
 
 }
